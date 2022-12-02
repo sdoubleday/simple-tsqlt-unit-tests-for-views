@@ -1,0 +1,4 @@
+CREATE SCHEMA [{{def.sutSchema}}__{{def.sutObject}}] AUTHORIZATION dbo;
+GO
+EXECUTE sp_addextendedproperty @name = N'tSQLt.TestClass', @value = 1, @level0type = N'SCHEMA', @level0name = N'[{{def.sutSchema}}__{{def.sutObject}}]';
+GO

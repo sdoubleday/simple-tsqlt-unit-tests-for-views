@@ -1,0 +1,96 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "tSQLtView",
+    "description": "A straightforward unit test of TSQL view",
+    "type": "object",
+    "properties": {
+      "testName": {
+        "title": "Test Name",
+        "description": "Must be unique per view",
+        "type": "string"
+      },
+      "sutSchema": {
+        "title": "Schema Name",
+        "description": "System Under Test - The schema of the view",
+        "type": "string"
+      },
+      "sutObject": {
+        "title": "View Name",
+        "description": "System Under Test - The name of the view",
+        "type": "string"
+      },
+      "fakes": {
+        "type": "array",
+        "items": {
+          "title": "Fakes",
+          "type": "object",
+          "properties": {
+            "schemaName": {
+              "title": "Schema Name Of Object To Fake",
+              "description": "Fake - The schema of the view or table",
+              "type": "string"
+            },
+            "objectName": {
+              "title": "Object Name Of Table or View To Fake",
+              "description": "Fake - The name of the view or table",
+              "type": "string"
+            },
+            "columns": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "columnName": {
+                    "title": "Column Name",
+                    "description": "Column to populate",
+                    "type": "string"
+                  },
+                  "values": {
+                    "description": "Array of values - all faked columns must have the same number of items in these arrays, and rows are inserted one per index.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "expectedColumns": {
+        "title": "Expected rows coming out of the view",
+        "description": "These get compared to the actual output of the view.",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "columnName": {
+              "title": "Column Name",
+              "description": "Column to populate",
+              "type": "string"
+            },
+            "sqlDataType": {
+                "title": "SQL Data Type",
+                "description": "Specifying data type correctly can avoid errors from implicit conversions. Note UNIQUEIDENTIFIER not available since we would need to specify a variable and reuse it and that's out of scope for this simple implementation.",
+                "type": "string",
+                "enum": [
+                    "NVARCHAR(4000)",
+                    "DATE",
+                    "DECIMAL(38,20)",
+                    "INT"
+                ],
+                "default": "NVARCHAR(4000)"
+            },
+            "values": {
+              "description": "Array of values - all faked columns must have the same number of items in these arrays, and rows are inserted one per index.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
