@@ -23,6 +23,12 @@
   - So stick to the minimum number of rows, as is good practice for unit testing anyway.
 - Version control the JSON, but if these are your ONLY tests, you might not need to version control your tSQLt project since you can rebuild the tests from here.
 
+### Stored Procedure Tests
+
+- I've added the ability to run a stored procedure at the beginning of the Act step. This would ACTUALLY be your System Under Test in that case.
+- To run a stored procedure, specify at least sprocUnderTestSchema and sprocUnderTestObject in the test definition.
+  - Optionally, add the sprocUnderTestParameters array to pass it parameters.
+
 ## Textrude prerequisites, from chocolatey
 ```powershell
 Write-Verbose -Verbose "Download Dotnet 5 for textrude...";
@@ -36,7 +42,7 @@ choco install textrude -y;
 ```powershell
 $directoryOfUnitTestJson = ".\your\path\here\";
 $directoryOfUnitTestSql  = ".\your\tsqlt\sqlproj\path\here\"; #try this if you need a buildable tSQLt project: https://github.com/sdoubleday/tSQLt_SampleDbproj
-ls $directoryOfUnitTestJson | ForEach-Object {
+ls $directoryOfUnitTestJson -File -Recurse -Filter *.json | ForEach-Object {
     $json = Get-Content $_.FullName | ConvertFrom-Json;
     textrude render --models $_.Fullname --template $PSScriptRoot\unitTestOfViews_textrudetemplate.txt --output "$directoryOfUnitTestSql\$($json.sutSchema)__$($json.sutObject)__$($json.testName).sql" ;
     textrude render --definitions sutSchema=$($json.sutSchema), sutObject=$($json.sutObject) --template $PSScriptRoot\unitTestClass_textrudetemplate.txt --output "$directoryOfUnitTestSql\$($json.sutSchema)__$($json.sutObject)_classschema.sql";

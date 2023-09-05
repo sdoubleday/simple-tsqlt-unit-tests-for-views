@@ -11,7 +11,8 @@ BEGIN
     EXECUTE [TestHelpers].[DataBuilder_{{f.schemaName}}_{{f.objectName}}] {{m=0; for c in f.columns}}{{if m != 0}}{{","}}{{end}}{{"@"}}{{c.columnName}} = {{if c.values[n] != "NULL"}}{{"'"}}{{end}}{{c.values[n]}}{{if c.values[n] != "NULL"}}{{"'"}}{{end}} {{m=m+1;end}};{{n = n + 1;end}}
 {{end}}
 	
-	--ACT
+	--ACT{{if model.sprocUnderTestObject != null}}
+	EXECUTE [{{model.sprocUnderTestSchema}}].[{{model.sprocUnderTestObject}}]{{p=0;for sprocParam in model.sprocUnderTestParameters}}{{if p == 0}}{{" "}}{{end}}{{if p != 0}}{{","}}{{end}}{{"@"}}{{sprocParam.parameterName}}={{if sprocParam.parameterValue != "NULL"}}{{"'"}}{{end}}{{sprocParam.parameterValue}}{{if sprocParam.parameterValue != "NULL"}}{{"'"}}{{end}}{{p=p+1;end}};{{end}}
 	SELECT{{p=0;for ec in model.expectedColumns}}
     {{if p == 0}}{{" "}}{{end}}{{if p != 0}}{{","}}{{end}}[{{ec.columnName}}]{{p=p+1;end}}	
     INTO [{{model.sutSchema}}__{{model.sutObject}}].ACTUAL

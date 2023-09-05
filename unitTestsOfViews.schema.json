@@ -58,6 +58,36 @@
           }
         }
       },
+      "sprocUnderTestSchema": {
+        "title": "Schema Name",
+        "description": "Stored Procedure Under Test - The schema of the stored procedure. Only specify if you are testing a sproc.",
+        "type": "string"
+      },
+      "sprocUnderTestObject": {
+        "title": "Stored Procedure Name",
+        "description": "Stored Procedure Under Test - The name of the stored procedure. Pair this with sprocUnderTestSchema.",
+        "type": "string"
+      },
+      "sprocUnderTestParameters": {
+        "type": "array",
+        "items": {
+          "title": "Parameters",
+          "type": "object",
+          "properties": {
+            "parameterName": {
+              "title": "Parameter Name",
+              "description": "Parameter Name to pass to Stored Procedure Under Test",
+              "type": "string"
+            },
+            "parameterValue": {
+              "title": "Parameter Value",
+              "description": "Parameter Value to pass to Stored Procedure Under Test",
+              "type": "string"
+            }
+          }
+
+        }
+      },
       "expectedColumns": {
         "title": "Expected rows coming out of the view",
         "description": "These get compared to the actual output of the view.",
