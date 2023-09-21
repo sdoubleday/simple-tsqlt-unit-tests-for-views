@@ -8,7 +8,7 @@ BEGIN
 {{for f in model.fakes}}
 	EXECUTE tSQLt.FakeTable @TableName = '[{{f.schemaName}}].[{{f.objectName}}]';
 {{n= 0;for i in f.columns[0].values}}
-    EXECUTE [TestHelpers].[DataBuilder_{{f.schemaName}}_{{f.objectName}}] {{m=0; for c in f.columns}}{{if m != 0}}{{","}}{{end}}{{"@"}}{{c.columnName}} = {{if c.values[n] != "NULL"}}{{"'"}}{{end}}{{c.values[n]}}{{if c.values[n] != "NULL"}}{{"'"}}{{end}} {{m=m+1;end}};{{n = n + 1;end}}
+    EXECUTE [TestHelpers].[DataBuilder_{{f.schemaName}}_{{f.objectName}}] {{m=0; for c in f.columns}}{{if m != 0}}{{","}}{{end}}{{"@"}}{{string.replace (string.replace c.columnName " " "_") "." "_" }} = {{if c.values[n] != "NULL"}}{{"'"}}{{end}}{{c.values[n]}}{{if c.values[n] != "NULL"}}{{"'"}}{{end}} {{m=m+1;end}};{{n = n + 1;end}}
 {{end}}
 	
 	--ACT{{if model.sprocUnderTestObject != null}}
